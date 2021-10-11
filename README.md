@@ -1,2 +1,2 @@
 # XRMSolutionValidator
-Tooling to validate Dynamics 
+Tooling to validate Dynamics solutions.
