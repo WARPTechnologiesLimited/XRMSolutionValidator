@@ -17,12 +17,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+
     - name: Restore dependencies
-      run: dotnet restore
-      working-directory: ./src
+      run: dotnet restore ./src/WARP.XrmSolutionValidator.sln
+
     - name: Build
-      run: dotnet build --no-restore
-      working-directory: ./src
+      run: dotnet build ./src/WARP.XrmSolutionValidator.sln --no-restore
+
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: ./src
+      run: dotnet test ./src/WARP.XrmSolutionValidator.sln --no-build --verbosity normal
+
