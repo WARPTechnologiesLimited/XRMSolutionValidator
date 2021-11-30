@@ -12,26 +12,26 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: './Admin/published'
   SOLUTION_FILE: './src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln'
 
-  jobs:
+jobs:
   build:
-
+    name: Build and Test XrmSolutionValidator
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-      - uses: actions/checkout@v2
+    - name: Checkout Code
+    - uses: actions/checkout@v2
 
-      - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION}}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.NETCORE_VERSION }}
+    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION}}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.NETCORE_VERSION }}
 
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_FILE }}
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_FILE }}
 
-      - name: Build
-        run: dotnet build ${{ env.PROJECT_FILE }}  --no-restore -c Release
+    - name: Build
+      run: dotnet build ${{ env.PROJECT_FILE }}  --no-restore -c Release
 
-      - name: Test
-        run: dotnet test ${{ env.PROJECT_FILE }}
+    - name: Test
+      run: dotnet test ${{ env.PROJECT_FILE }}
 
