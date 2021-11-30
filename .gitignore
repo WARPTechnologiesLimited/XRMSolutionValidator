@@ -210,38 +210,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-##---------------------- Warp RAF specific exclusions
-
-lib/*
-*.GeneratedCode*
-*GeneratedViews
-*\Deploy
-
-# other auto generated files
-src/Hurricane.Reports/Hurricane.Reports.Triage/Bases/ATCBase.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/Bases/GroundBase.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/Bases/PilotBase.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/Bases/*Base.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/Views/*.xaml.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/Views/*.xaml
-src/Hurricane.Reports/Hurricane.Reports.Triage/ValidationProvider.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/ReportViewResolver.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/ListProvider.cs
-src/Hurricane.Reports/Hurricane.Reports.Triage/ReportPackage.cs
-
-src/Hurricane.Reports/Hurricane.Reports.SEMR/Bases/*Base.cs
-src/Hurricane.Reports/Hurricane.Reports.SEMR/Views/*.xaml.cs
-src/Hurricane.Reports/Hurricane.Reports.SEMR/Views/*.xaml
-src/Hurricane.Reports/Hurricane.Reports.SEMR/ValidationProvider.cs
-src/Hurricane.Reports/Hurricane.Reports.SEMR/ReportViewResolver.cs
-src/Hurricane.Reports/Hurricane.Reports.SEMR/ListProvider.cs
-src/Hurricane.Reports/Hurricane.Reports.SEMR/ReportPackage.cs
-
-/src/Hurricane.Web/Hurricane.Web/Views/Pilot/Index.cshtml
-/src/Hurricane.Web/Hurricane.Web.Triage/Views
-/src/lib/WARP.Data/Hurricane.Data.Integration.dll
-/src/lib/WARP.Data/WARP.Data.AssessmentClient.dll
-/src/lib/WARP.Data/WARP.Data.AssessmentClient.dll.config
-/output/
-/src/WARP.XrmSolutionAssistant/WARP.XrmSolutionAssistant.Core/Properties/launchSettings.json
-/src/WARP.XrmSolutionAssistant/WARP.XrmSolutionAssistant.Console/Properties/launchSettings.json
+# XRM Solution Validator Specific
+!src/stylecop.json
