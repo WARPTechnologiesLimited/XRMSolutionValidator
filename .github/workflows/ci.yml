@@ -6,32 +6,23 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  NETCORE_VERSION: '3.1.x'
-  AZURE_WEBAPP_NAME: 'testfinderadmin'
-  AZURE_WEBAPP_PACKAGE_PATH: './Admin/published'
-  SOLUTION_FILE: './src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln'
-
 jobs:
   build:
-    name: Build and Test XrmSolutionValidator
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
     - uses: actions/checkout@v2
-
-    - name: Setup .NET Core SDK ${{ env.NETCORE_VERSION}}
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.NETCORE_VERSION }}
+        dotnet-version: 3.1.x
 
     - name: Restore dependencies
-      run: dotnet restore ${{ env.PROJECT_FILE }}
+      run: dotnet restore ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
 
     - name: Build
-      run: dotnet build ${{ env.PROJECT_FILE }}  --no-restore -c Release
+      run: dotnet build ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
 
     - name: Test
-      run: dotnet test ${{ env.PROJECT_FILE }}
-
+      run: dotnet test ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
