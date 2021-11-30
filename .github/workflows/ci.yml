@@ -19,11 +19,11 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Restore dependencies
-      run: dotnet restore ./src/WARP.XrmSolutionValidator.sln
+      run: dotnet restore /src/WARP.XrmSolutionValidator.sln
 
     - name: Build
-      run: dotnet build ./src/WARP.XrmSolutionValidator.sln --no-restore
+      run: dotnet build /src/WARP.XrmSolutionValidator.sln --no-restore
 
     - name: Test
-      run: dotnet test ./src/WARP.XrmSolutionValidator.sln --no-build --verbosity normal
+      run: dotnet test /src/WARP.XrmSolutionValidator.sln --no-build --verbosity normal
 
