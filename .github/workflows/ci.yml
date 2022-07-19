@@ -1,0 +1,28 @@
+name: Build and Test XrmSolutionValidator
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Restore dependencies
+      run: dotnet restore ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
+
+    - name: Build
+      run: dotnet build ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
+
+    - name: Test
+      run: dotnet test ./src/WARP.XrmSolutionValidator/WARP.XrmSolutionValidator.sln
