@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WARP.XrmSolutionValidator.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Git\\Apollo\\src\\Apollo.CRM\\Apollo.CRM.Solution\\srcApollo"
+    }
+  }
+}

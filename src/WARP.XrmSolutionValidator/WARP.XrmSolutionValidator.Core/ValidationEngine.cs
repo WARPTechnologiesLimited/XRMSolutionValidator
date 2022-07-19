@@ -49,10 +49,78 @@ namespace WARP.XrmSolutionValidator.Core
                 Solution = Helpers.XmlLoader<XrmModels.ImportExportXml>.LoadXml(Path.Combine(solutionRoot.FullName, "Other", "Solution.xml")),
             };
 
-            // Load Workflow XML
-            foreach (var file in solutionRoot.GetDirectories("*Workflows")?[0].GetFiles().Where(f => f.Extension == ".xml"))
+            // Load Entity XML
+            foreach (var entityDirectory in solutionRoot.GetDirectories("*Entities")?[0].GetDirectories())
             {
-                this.solution.Workflows.Add(Helpers.XmlLoader<Workflow>.LoadXml(file.FullName));
+                foreach (var file in entityDirectory.GetFiles().Where(f => f.Name == "Entity.xml"))
+                {
+                    this.solution.Entities.Add(Helpers.XmlLoader<Entity>.LoadXml(file.FullName));
+                }
+            }
+
+            var relationshipsDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Other", "Relationships"));
+
+            if (relationshipsDir.Exists)
+            {
+                // Load Entity Relationships XML
+                foreach (var file in relationshipsDir.GetFiles().Where(f => f.Extension == ".xml"))
+                {
+                    this.solution.EntityRelationshps.Add(Helpers.XmlLoader<EntityRelationships>.LoadXml(file.FullName));
+                }
+            }
+
+            var optionSetsDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "OptionSets"));
+
+            if (optionSetsDir.Exists)
+            {
+                // Load OptionSet XML
+                foreach (var file in optionSetsDir.GetFiles().Where(f => f.Extension == ".xml"))
+                {
+                    this.solution.OptionSets.Add(Helpers.XmlLoader<optionset>.LoadXml(file.FullName));
+                }
+            }
+
+            var pluginsDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "PluginAssemblies"));
+
+            if (pluginsDir.Exists)
+            {
+                // Load Plugin Assembly XML
+                foreach (var entityDirectory in pluginsDir.GetDirectories())
+                {
+                    foreach (var file in entityDirectory.GetFiles().Where(f => f.Extension == ".xml"))
+                    {
+                        this.solution.PluginAssemblies.Add(Helpers.XmlLoader<PluginAssembly>.LoadXml(file.FullName));
+                    }
+                }
+            }
+
+            var sdkMessagesDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "SdkMessageProcessingSteps"));
+
+            if (sdkMessagesDir.Exists)
+            {
+                // Load SDK message processing step XML
+                foreach (var file in sdkMessagesDir.GetFiles().Where(f => f.Extension == ".xml"))
+                {
+                    this.solution.SdkMessageProcessingSteps.Add(Helpers.XmlLoader<SdkMessageProcessingStep>.LoadXml(file.FullName));
+                }
+            }
+
+            var workflowssDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Workflows"));
+
+            if (workflowssDir.Exists)
+            {
+                // Load Workflow XML
+                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xml"))
+                {
+                    this.solution.Workflows.Add(Helpers.XmlLoader<Workflow>.LoadXml(file.FullName));
+                }
+
+                // Load Workflow XAML Names
+                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xaml"))
+                {
+                    // Trim the 
+                    this.solution.WorkflowXamlNames.Add(file.Name);
+                }
             }
 
             this.solutionLoaded = true;

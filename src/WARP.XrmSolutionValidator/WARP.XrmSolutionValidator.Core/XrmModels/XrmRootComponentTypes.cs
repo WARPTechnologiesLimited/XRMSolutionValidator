@@ -13,5 +13,20 @@ namespace WARP.XrmSolutionValidator.Core.XrmModels
         /// Value used for workflow records.
         /// </summary>
         public static readonly string Workflow = "29";
+
+        /// <summary>
+        /// Value used for field permission records.
+        /// </summary>
+        public static readonly string FieldPermission = "71";
+
+        /// <summary>
+        /// Value used for plugin type records.
+        /// </summary>
+        public static readonly string PluginType = "90";
+
+        /// <summary>
+        /// Value used for plugin assembly records.
+        /// </summary>
+        public static readonly string PluginAssembly = "91";
     }
 }

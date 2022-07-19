@@ -21,11 +21,17 @@ namespace WARP.XrmSolutionValidator.Console
         /// <param name="args">The passed command line arguments.</param>
         public static void Main(string[] args)
         {
+            if (args.Length != 1)
+            {
+                Console.WriteLine("Please provide the path to run the validation against as a command line argument.");
+                return;
+            }
+
             Console.WriteLine("Starting Validation...");
 
-            var v = new ValidationEngine(new List<IValidator> { new TestValidator(), new WorkflowScope(), new WorkflowIntegrity() });
+            var v = new ValidationEngine(new List<IValidator> { new WorkflowScope(), new WorkflowIntegrity(), new AssemblyReferences() });
 
-            v.LoadSolution(new DirectoryInfo(@"C:\Git\PIP\src\Phoenix.CRM\Phoenix.CRM.PackageProxy\src"));
+            v.LoadSolution(new DirectoryInfo(args[0]));
 
             var result = v.Validate();
 

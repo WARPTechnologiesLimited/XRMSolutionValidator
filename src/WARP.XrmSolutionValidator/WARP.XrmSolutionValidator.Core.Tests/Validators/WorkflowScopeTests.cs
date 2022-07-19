@@ -1,4 +1,4 @@
-// <copyright file="UnitTest1.cs" company="WARP Technologies Limited">
+// <copyright file="WorkflowScopeTests.cs" company="WARP Technologies Limited">
 // Released by WARP for use by the CRM development community.
 // </copyright>
 

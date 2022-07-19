@@ -26,15 +26,15 @@ namespace WARP.XrmSolutionValidator.Core.Validators
         {
             var result = new ValidationResult { ValidationCompletedSuccessfully = true };
 
-            foreach (var wf in solution.Workflows.Where(w => !File.Exists(Path.Combine(solution.SolutionRoot.FullName, w.XamlFileName.Substring(1)))))
+            var lowercaseXamlNames = solution.WorkflowXamlNames.Select(w => w.ToLower()).ToList();
+
+            foreach (var wf in solution.Workflows.Where(w => !lowercaseXamlNames.Contains(w.XamlFileName.Substring(11).ToLower())))
             {
                 // Missing XAML file
                 result.AddFeedback(FeedbackLevel.Error, $"Workflow XAML file missing '{wf.XamlFileName}'");
             }
 
-            var workflowGuids =
-                solution.Solution.SolutionManifest.SelectMany(m =>
-                    m.RootComponents.Where(rc => rc.type == XrmRootComponentTypes.Workflow).Select(r => r.id.ToLower()));
+            var workflowGuids = solution.GetRootComponentIds(XrmRootComponentTypes.Workflow).ToList();
 
             foreach (var workflow in solution.Workflows.Where(w => workflowGuids.All(g => string.Compare(w.WorkflowId, g, StringComparison.OrdinalIgnoreCase) != 0)))
             {
@@ -45,7 +45,7 @@ namespace WARP.XrmSolutionValidator.Core.Validators
             foreach (var wfGuid in workflowGuids.Where(g => solution.Workflows.All(w => w.WorkflowId != g)))
             {
                 // Workflow file missing which is listed in solution XML
-                result.AddFeedback(FeedbackLevel.Error, $"Workflow listed in Solution.xml with GUID {wfGuid} was not found in the workflow directory.");
+                result.AddFeedback(FeedbackLevel.Error, $"Workflow listed in Solution.xml root components with GUID {wfGuid} was not found in the workflow directory.");
             }
 
             return result;
