@@ -50,11 +50,22 @@ namespace WARP.XrmSolutionValidator.Core
             };
 
             // Load Entity XML
-            foreach (var entityDirectory in solutionRoot.GetDirectories("*Entities")?[0].GetDirectories())
+            foreach (var entityDirectory in solutionRoot.GetDirectories("*Entities")[0].GetDirectories())
             {
-                foreach (var file in entityDirectory.GetFiles().Where(f => f.Name == "Entity.xml"))
+                var entityFile = entityDirectory.GetFiles("Entity.xml").FirstOrDefault();
+                if (entityFile != null)
                 {
-                    this.solution.Entities.Add(Helpers.XmlLoader<Entity>.LoadXml(file.FullName));
+                    var entity = Helpers.XmlLoader<Entity>.LoadXml(entityFile.FullName);
+
+                    foreach (var savedQueriesDirectory in entityDirectory.GetDirectories("SavedQueries"))
+                    {
+                        foreach (var file in savedQueriesDirectory.GetFiles("{*}.xml"))
+                        {
+                            entity.SavedQueryDetails.Add(Helpers.XmlLoader<savedqueries>.LoadXml(file.FullName));
+                        }
+                    }
+
+                    this.solution.Entities.Add(entity);
                 }
             }
 
