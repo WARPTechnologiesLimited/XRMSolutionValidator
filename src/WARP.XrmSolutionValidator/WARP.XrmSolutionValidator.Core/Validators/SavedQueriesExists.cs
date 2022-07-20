@@ -23,7 +23,7 @@ namespace WARP.XrmSolutionValidator.Core.Validators
 
             foreach (var entity in solution.Entities.Where(e => e.SavedQueries == null && e.SavedQueryDetails.Any()))
             {
-                result.FeedbackItems.Add(new FeedbackItem { Level = FeedbackLevel.Error, Message = $"Entity '{entity.Name[0].Value}' has {entity.SavedQueryDetails.Count} saved queries, but has no SavedQueries element in its Entity.xml." });
+                result.FeedbackItems.Add(new FeedbackItem { Level = FeedbackLevel.Error, Message = $"Entity '{entity.Name?.ElementAtOrDefault(0)?.Value}' has {entity.SavedQueryDetails.Count} saved queries, but has no SavedQueries element in its Entity.xml." });
             }
 
             return result;
