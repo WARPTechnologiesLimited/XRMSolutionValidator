@@ -76,7 +76,7 @@ namespace WARP.XrmSolutionValidator.Core
                 // Load Entity Relationships XML
                 foreach (var file in relationshipsDir.GetFiles().Where(f => f.Extension == ".xml"))
                 {
-                    this.solution.EntityRelationshps.Add(Helpers.XmlLoader<EntityRelationships>.LoadXml(file.FullName));
+                    this.solution.EntityRelationships.Add(Helpers.XmlLoader<EntityRelationships>.LoadXml(file.FullName));
                 }
             }
 
@@ -116,21 +116,31 @@ namespace WARP.XrmSolutionValidator.Core
                 }
             }
 
-            var workflowssDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Workflows"));
+            var workflowsDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Workflows"));
 
-            if (workflowssDir.Exists)
+            if (workflowsDir.Exists)
             {
                 // Load Workflow XML
-                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xml"))
+                foreach (var file in workflowsDir.GetFiles().Where(f => f.Extension == ".xml"))
                 {
                     this.solution.Workflows.Add(Helpers.XmlLoader<Workflow>.LoadXml(file.FullName));
                 }
 
                 // Load Workflow XAML Names
-                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xaml"))
+                foreach (var file in workflowsDir.GetFiles().Where(f => f.Extension == ".xaml"))
                 {
                     // Trim the 
                     this.solution.WorkflowXamlNames.Add(file.Name);
+                }
+            }
+
+            var webResourceDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "WebResources"));
+            if (webResourceDir.Exists)
+            {
+                // Load Web Resource XML file names
+                foreach (var fileName in webResourceDir.GetFiles("*.data.xml", new EnumerationOptions() { RecurseSubdirectories = true }))
+                {
+                    this.solution.WebResourceXmlNames.Add(Path.GetRelativePath(webResourceDir.FullName, fileName.FullName));
                 }
             }
 

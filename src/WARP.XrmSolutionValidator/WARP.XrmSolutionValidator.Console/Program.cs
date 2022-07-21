@@ -29,7 +29,14 @@ namespace WARP.XrmSolutionValidator.Console
 
             Console.WriteLine("Starting Validation...");
 
-            var v = new ValidationEngine(new List<IValidator> { new WorkflowScope(), new WorkflowIntegrity(), new AssemblyReferences(), new SavedQueriesExists() });
+            var v = new ValidationEngine(new List<IValidator>
+            {
+                new WorkflowScope(),
+                new WorkflowIntegrity(),
+                new AssemblyReferences(),
+                new SavedQueriesExists(),
+                new WebResourceIntegrity(),
+            });
 
             v.LoadSolution(new DirectoryInfo(args[0]));
 

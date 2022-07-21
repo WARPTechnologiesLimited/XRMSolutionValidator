@@ -15,6 +15,11 @@ namespace WARP.XrmSolutionValidator.Core.XrmModels
         public static readonly string Workflow = "29";
 
         /// <summary>
+        /// Value used for web resource records.
+        /// </summary>
+        public static readonly string WebResource = "61";
+
+        /// <summary>
         /// Value used for field permission records.
         /// </summary>
         public static readonly string FieldPermission = "71";

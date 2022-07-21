@@ -2,15 +2,12 @@
 // Released by WARP for use by the CRM development community.
 // </copyright>
 
-using WARP.XrmSolutionValidator.Core.Helpers;
-
 namespace WARP.XrmSolutionValidator.Core.Models
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.IO;
-    using System.Text;
+    using System.Linq;
+    using WARP.XrmSolutionValidator.Core.Helpers;
     using WARP.XrmSolutionValidator.Core.XrmModels;
 
     /// <summary>
@@ -27,12 +24,13 @@ namespace WARP.XrmSolutionValidator.Core.Models
             this.SolutionRoot = solutionRoot;
 
             this.Entities = new List<Entity>();
-            this.EntityRelationshps = new List<EntityRelationships>();
+            this.EntityRelationships = new List<EntityRelationships>();
             this.OptionSets = new List<optionset>();
             this.PluginAssemblies= new List<PluginAssembly>();
             this.SdkMessageProcessingSteps = new List<SdkMessageProcessingStep>();
             this.Workflows = new List<Workflow>();
             this.WorkflowXamlNames = new List<string>();
+            this.WebResourceXmlNames = new List<string>();
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace WARP.XrmSolutionValidator.Core.Models
         /// <summary>
         /// Gets or sets the entity relationships contained in the Solution files.
         /// </summary>
-        public List<EntityRelationships> EntityRelationshps { get; set; }
+        public List<EntityRelationships> EntityRelationships { get; set; }
 
         /// <summary>
         /// Gets or sets the option sets contained in the Solution files.
@@ -81,6 +79,11 @@ namespace WARP.XrmSolutionValidator.Core.Models
         public List<string> WorkflowXamlNames { get; set; }
 
         /// <summary>
+        /// Gets or sets the Web Resource XML file names contained in the Solution files.
+        /// </summary>
+        public List<string> WebResourceXmlNames { get; set; }
+
+        /// <summary>
         /// Check for the specified root components in the solution.
         /// </summary>
         /// <param name="type">The type of component, ideally provided by WARP.XrmSolutionValidator.Core.XrmModels.XrmRootComponentTypes.</param>
@@ -101,6 +104,17 @@ namespace WARP.XrmSolutionValidator.Core.Models
         {
             return this.Solution.SolutionManifest.SelectMany(m =>
                     m.RootComponents?.Where(rc => rc.type == type).Select(r => r.id.ToLower()));
+        }
+
+        /// <summary>
+        /// Get the schemaNames for for the specified type of root component in the solution.
+        /// </summary>
+        /// <param name="type">The type of component, ideally provided by WARP.XrmSolutionValidator.Core.XrmModels.XrmRootComponentTypes.</param>
+        /// <returns>Enumerable of schema names.</returns>
+        public IEnumerable<string> GetRootComponentSchemaNames(string type)
+        {
+            return this.Solution.SolutionManifest.SelectMany(m =>
+                m.RootComponents?.Where(rc => rc.type == type).Select(r => r.schemaName));
         }
     }
 }
