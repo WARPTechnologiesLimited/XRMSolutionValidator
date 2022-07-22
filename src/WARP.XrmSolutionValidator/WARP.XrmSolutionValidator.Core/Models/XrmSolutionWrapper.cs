@@ -31,6 +31,7 @@ namespace WARP.XrmSolutionValidator.Core.Models
             this.Workflows = new List<Workflow>();
             this.WorkflowXamlNames = new List<string>();
             this.WebResourceXmlNames = new List<string>();
+            this.WebResourceSourceCodeFileNames = new List<string>();
         }
 
         /// <summary>
@@ -82,6 +83,11 @@ namespace WARP.XrmSolutionValidator.Core.Models
         /// Gets or sets the Web Resource XML file names contained in the Solution files.
         /// </summary>
         public List<string> WebResourceXmlNames { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Web Resource source code file names.
+        /// </summary>
+        public List<string> WebResourceSourceCodeFileNames { get; set; }
 
         /// <summary>
         /// Check for the specified root components in the solution.

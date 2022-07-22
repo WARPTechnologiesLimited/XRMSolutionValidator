@@ -36,8 +36,9 @@ namespace WARP.XrmSolutionValidator.Core
         /// Loads the required data from the Solution for validation.
         /// </summary>
         /// <param name="solutionRoot">The root directory of the Solution.</param>
+        /// <param name="webResourcesSourceCodeRoot">The root directory where the web resources source code exists.</param>
         /// <returns>True if load was successful.</returns>
-        public bool LoadSolution(DirectoryInfo solutionRoot)
+        public bool LoadSolution(DirectoryInfo solutionRoot, DirectoryInfo webResourcesSourceCodeRoot)
         {
             if (solutionRoot == null || !solutionRoot.Exists)
             {
@@ -141,6 +142,19 @@ namespace WARP.XrmSolutionValidator.Core
                 foreach (var fileName in webResourceDir.GetFiles("*.data.xml", new EnumerationOptions() { RecurseSubdirectories = true }))
                 {
                     this.solution.WebResourceXmlNames.Add(Path.GetRelativePath(webResourceDir.FullName, fileName.FullName));
+                }
+            }
+
+            // Load web resources source file names
+            if (!webResourcesSourceCodeRoot.Exists)
+            {
+                throw new DirectoryNotFoundException($"Web Resources Source Code Root directory does not exist [{webResourcesSourceCodeRoot}]");
+            }
+            else
+            {
+                foreach (var fileName in webResourcesSourceCodeRoot.GetFiles("*", new EnumerationOptions() { RecurseSubdirectories = true }))
+                {
+                    this.solution.WebResourceSourceCodeFileNames.Add(Path.GetRelativePath(webResourcesSourceCodeRoot.FullName, fileName.FullName));
                 }
             }
 
