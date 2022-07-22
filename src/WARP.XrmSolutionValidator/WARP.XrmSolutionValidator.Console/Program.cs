@@ -21,9 +21,11 @@ namespace WARP.XrmSolutionValidator.Console
         /// <param name="args">The passed command line arguments.</param>
         public static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
-                Console.WriteLine("Please provide the path to run the validation against as a command line argument.");
+                Console.WriteLine("Please provide the following arguments in order:");
+                Console.WriteLine("1 - Path to the unpacked solution to run validation against.");
+                Console.WriteLine("2 - Path to the web resources source code directory.");
                 return;
             }
 
@@ -38,7 +40,7 @@ namespace WARP.XrmSolutionValidator.Console
                 new WebResourceIntegrity(),
             });
 
-            v.LoadSolution(new DirectoryInfo(args[0]));
+            v.LoadSolution(new DirectoryInfo(args[0]), new DirectoryInfo(args[1]));
 
             var result = v.Validate();
 
