@@ -10,6 +10,11 @@ namespace WARP.XrmSolutionValidator.Core.XrmModels
     public static class XrmRootComponentTypes
     {
         /// <summary>
+        /// Value used for entity records.
+        /// </summary>
+        public static readonly string Entity = "1";
+
+        /// <summary>
         /// Value used for workflow records.
         /// </summary>
         public static readonly string Workflow = "29";

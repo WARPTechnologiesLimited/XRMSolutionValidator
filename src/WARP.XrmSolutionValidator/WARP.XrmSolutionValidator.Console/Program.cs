@@ -38,6 +38,7 @@ namespace WARP.XrmSolutionValidator.Console
                 new AssemblyReferences(),
                 new SavedQueriesExists(),
                 new WebResourceIntegrity(),
+                new EntityValidator(),
             });
 
             v.LoadSolution(new DirectoryInfo(args[0]), new DirectoryInfo(args[1]));

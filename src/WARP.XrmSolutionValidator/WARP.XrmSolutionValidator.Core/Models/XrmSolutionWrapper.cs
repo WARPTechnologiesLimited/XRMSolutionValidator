@@ -26,7 +26,7 @@ namespace WARP.XrmSolutionValidator.Core.Models
             this.Entities = new List<Entity>();
             this.EntityRelationships = new List<EntityRelationships>();
             this.OptionSets = new List<optionset>();
-            this.PluginAssemblies= new List<PluginAssembly>();
+            this.PluginAssemblies = new List<PluginAssembly>();
             this.SdkMessageProcessingSteps = new List<SdkMessageProcessingStep>();
             this.Workflows = new List<Workflow>();
             this.WorkflowXamlNames = new List<string>();
