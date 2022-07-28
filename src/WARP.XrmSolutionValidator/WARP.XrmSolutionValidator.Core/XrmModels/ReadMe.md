@@ -10,4 +10,4 @@ The following behaviours have been noticed and should observered when regenerati
 - When generating some .cs file from .xml files the produced file must have a find and replace executed to change "[][]" to "[]" - this appears to be a bug in the XSD tool.
   The indication this issue is occuring is the exception - "System.PlatformNotSupportedException: 'Compiling JScript/CSharp scripts is not supported'"
 - Each file contains the NewDataSet class so it must be removed on new/regenerated files.
-- Some other claasses in generated files will also class names, again these should be removed or renamed.
+- Some other classes in generated files will also duplicate class names, again these should be removed or renamed.

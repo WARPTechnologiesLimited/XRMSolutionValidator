@@ -36,8 +36,9 @@ namespace WARP.XrmSolutionValidator.Core
         /// Loads the required data from the Solution for validation.
         /// </summary>
         /// <param name="solutionRoot">The root directory of the Solution.</param>
+        /// <param name="webResourcesSourceCodeRoot">The root directory where the web resources source code exists.</param>
         /// <returns>True if load was successful.</returns>
-        public bool LoadSolution(DirectoryInfo solutionRoot)
+        public bool LoadSolution(DirectoryInfo solutionRoot, DirectoryInfo webResourcesSourceCodeRoot)
         {
             if (solutionRoot == null || !solutionRoot.Exists)
             {
@@ -50,11 +51,22 @@ namespace WARP.XrmSolutionValidator.Core
             };
 
             // Load Entity XML
-            foreach (var entityDirectory in solutionRoot.GetDirectories("*Entities")?[0].GetDirectories())
+            foreach (var entityDirectory in solutionRoot.GetDirectories("*Entities")[0].GetDirectories())
             {
-                foreach (var file in entityDirectory.GetFiles().Where(f => f.Name == "Entity.xml"))
+                var entityFile = entityDirectory.GetFiles("Entity.xml").FirstOrDefault();
+                if (entityFile != null)
                 {
-                    this.solution.Entities.Add(Helpers.XmlLoader<Entity>.LoadXml(file.FullName));
+                    var entity = Helpers.XmlLoader<Entity>.LoadXml(entityFile.FullName);
+
+                    foreach (var savedQueriesDirectory in entityDirectory.GetDirectories("SavedQueries"))
+                    {
+                        foreach (var file in savedQueriesDirectory.GetFiles("{*}.xml"))
+                        {
+                            entity.SavedQueryDetails.Add(Helpers.XmlLoader<savedqueries>.LoadXml(file.FullName));
+                        }
+                    }
+
+                    this.solution.Entities.Add(entity);
                 }
             }
 
@@ -65,7 +77,7 @@ namespace WARP.XrmSolutionValidator.Core
                 // Load Entity Relationships XML
                 foreach (var file in relationshipsDir.GetFiles().Where(f => f.Extension == ".xml"))
                 {
-                    this.solution.EntityRelationshps.Add(Helpers.XmlLoader<EntityRelationships>.LoadXml(file.FullName));
+                    this.solution.EntityRelationships.Add(Helpers.XmlLoader<EntityRelationships>.LoadXml(file.FullName));
                 }
             }
 
@@ -105,21 +117,44 @@ namespace WARP.XrmSolutionValidator.Core
                 }
             }
 
-            var workflowssDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Workflows"));
+            var workflowsDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "Workflows"));
 
-            if (workflowssDir.Exists)
+            if (workflowsDir.Exists)
             {
                 // Load Workflow XML
-                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xml"))
+                foreach (var file in workflowsDir.GetFiles().Where(f => f.Extension == ".xml"))
                 {
                     this.solution.Workflows.Add(Helpers.XmlLoader<Workflow>.LoadXml(file.FullName));
                 }
 
                 // Load Workflow XAML Names
-                foreach (var file in workflowssDir.GetFiles().Where(f => f.Extension == ".xaml"))
+                foreach (var file in workflowsDir.GetFiles().Where(f => f.Extension == ".xaml"))
                 {
                     // Trim the 
                     this.solution.WorkflowXamlNames.Add(file.Name);
+                }
+            }
+
+            var webResourceDir = new DirectoryInfo(Path.Combine(solutionRoot.FullName, "WebResources"));
+            if (webResourceDir.Exists)
+            {
+                // Load Web Resource XML file names
+                foreach (var fileName in webResourceDir.GetFiles("*.data.xml", new EnumerationOptions() { RecurseSubdirectories = true }))
+                {
+                    this.solution.WebResourceXmlNames.Add(Path.GetRelativePath(webResourceDir.FullName, fileName.FullName));
+                }
+            }
+
+            // Load web resources source file names
+            if (!webResourcesSourceCodeRoot.Exists)
+            {
+                throw new DirectoryNotFoundException($"Web Resources Source Code Root directory does not exist [{webResourcesSourceCodeRoot}]");
+            }
+            else
+            {
+                foreach (var fileName in webResourcesSourceCodeRoot.GetFiles("*", new EnumerationOptions() { RecurseSubdirectories = true }))
+                {
+                    this.solution.WebResourceSourceCodeFileNames.Add(Path.GetRelativePath(webResourcesSourceCodeRoot.FullName, fileName.FullName));
                 }
             }
 
