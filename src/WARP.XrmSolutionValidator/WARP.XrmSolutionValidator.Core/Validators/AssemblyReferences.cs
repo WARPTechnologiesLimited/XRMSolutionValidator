@@ -36,7 +36,7 @@ namespace WARP.XrmSolutionValidator.Core.Validators
             {
                 var name = solution.Solution.SolutionManifest
                     .SelectMany(m => m.RootComponents.Where(rc => rc.id.IdEquals(rootComponent))).FirstOrDefault();
-                result.FeedbackItems.Add(new FeedbackItem { Level = FeedbackLevel.Error, Message = $"Plugin assembly '{name.schemaName}' is not present in the assemblies directory." });
+                result.FeedbackItems.Add(new FeedbackItem { Level = FeedbackLevel.Error, Message = $"Plugin assembly '{name?.schemaName}' is not present in the assemblies directory." });
             }
 
             return result;

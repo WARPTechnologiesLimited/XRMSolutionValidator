@@ -13,6 +13,9 @@ namespace WARP.XrmSolutionValidator.Core.Validators
     /// </summary>
     public class WebResourceIntegrity : IValidator
     {
+        private const string Suffix = ".data.xml";
+        private readonly GenericSchemaNameIntegrity internalValidator = new GenericSchemaNameIntegrity(XrmRootComponentTypes.WebResource, "WebResourceXmlNames", Suffix);
+
         /// <summary>
         /// Executes the Validator.
         /// </summary>
@@ -20,12 +23,9 @@ namespace WARP.XrmSolutionValidator.Core.Validators
         /// <returns>Feedback from the validation process.</returns>
         public ValidationResult Validate(XrmSolutionWrapper solution)
         {
-            const string suffix = ".data.xml";
-            var result = new ValidationResult { ValidationCompletedSuccessfully = true };
-
             var lowercaseXmlNames = solution.WebResourceXmlNames.Select(w => w.ToLower().Replace('\\', '/')).ToList();
             var lowercaseRootSchemaNames = solution.GetRootComponentSchemaNames(XrmRootComponentTypes.WebResource).Select(sn => $"{sn.ToLower()}").ToList();
-            var lowercaseSuffixedRootSchemaNames = lowercaseRootSchemaNames.Select(sn => $"{sn}{suffix}");
+            var lowercaseSuffixedRootSchemaNames = lowercaseRootSchemaNames.Select(sn => $"{sn}{Suffix}");
             var lowercaseSourceCodeNames = solution.WebResourceSourceCodeFileNames.Select(w => w.ToLower().Replace('\\', '/')).ToList();
 
             // Remove any 'prefix_' from the first part of the directory if one exists.
@@ -36,16 +36,7 @@ namespace WARP.XrmSolutionValidator.Core.Validators
                 return splitDirectories[0].EndsWith('_') ? string.Join('/', splitDirectories[1..]) : rsn;
             });
 
-            foreach (var lowercaseXmlName in lowercaseXmlNames.Where(x => !lowercaseSuffixedRootSchemaNames.Contains(x)))
-            {
-                result.AddFeedback(FeedbackLevel.Error, $"Web Resource detected that is missing from the Solution.xml file '{lowercaseXmlName}'");
-            }
-
-            foreach (var lowercaseRootSchemaName in lowercaseSuffixedRootSchemaNames.Where(rsn =>
-                         !lowercaseXmlNames.Contains(rsn)))
-            {
-                result.AddFeedback(FeedbackLevel.Error, $"Web Resource file missing '{lowercaseRootSchemaName}'");
-            }
+            var result = this.internalValidator.Validate(solution);
 
             foreach (var lowercaseRootSchemaName in lowerCasePrefixRemovedRootSchemaNames.Where(rsn =>
                          !lowercaseSourceCodeNames.Contains(rsn)))
